@@ -148,7 +148,9 @@ class OAuth2():
             url = cl_conf.get('userinfo_edp_uri')
             http_method = cl_conf.get('userinfo_edp_method')
 
-            request_data = {'access_token': atoken}
+            request_headers = {'Authorization' : 'Bearer {0}'.format(atoken)}
+            request_data = {}
+
             if cl_conf.get('userinfo_edp_params'):
                 for param in cl_conf.get('userinfo_edp_params'):
                     request_data[param] = cl_conf.get(param)
@@ -156,7 +158,8 @@ class OAuth2():
             print('request url={0}'.format(url))
             print('request data={0}'.format(request_data))
             if http_method == 'GET':
-                resp = requests.get(url, params=request_data)
+                resp = requests.get(url, params=request_data,
+                            headers=request_headers)
                 print('response url={0}'.format(resp.url))
                 print('response content-type={0}'.format(resp.headers['content-type']))
                 print('response encoding={0}'.format(resp.encoding))
